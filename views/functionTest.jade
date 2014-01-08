@@ -2,8 +2,89 @@ extends layout
 
 block content
   h1= 'Welcome ' + currentUser.name + '!'
+
+  h2 page access
+
+  h3 top
   ul
     li
-      a(href='/login') login
+      h4
+        a(href='/') /
+      span top page
     li
-      a(href='/logout') logout
+      h4
+        a(href='/login') /login
+      span redirect to twitte oauth page
+    li
+      h4
+        a(href='/logout') /logout
+      span
+
+  h3 mypage
+  ul
+    li
+      h4
+        a(href='/mypage') /mypage
+      span show my dashboard
+    li
+      h4
+        a(href='/mypage/cart') /mypage/cart
+      span show my shopping cart
+
+  h3 user
+  ul
+    li
+      h4
+        a(href='/user') /user
+      span show all users page (admin only)
+    li
+      h4
+        a(href='/user/detail/:USER_ID') /user/detail/:USER_ID
+      span show user page
+
+  h3 item
+  ul
+    li
+      h4
+        a(href='/item') /item
+      span show item page top
+    li
+      h4
+        a(href='/item/detail/ITEM_ID') /item/detail/:ITEM_ID
+      span show item detail
+    li
+      h4
+        a(href='/item/upload') /item/upload
+      span show item upload page
+
+  h2 xhr access
+
+  h3 admin
+  ul
+    li
+      h4 GET 
+        a(href='/api/admin/user') /api/admin/user
+      span get user info
+    li
+      h4 POST /api/admin/user
+      span create or update user
+
+  h3 user
+  ul
+    li
+      h4 GET /api/user
+      span get my account info
+    li
+      h4 POST /api/user
+      span update my account info
+
+  h3 item
+  ul
+    li
+      h4 GET /api/item
+      span get item data
+    li
+      h4 POST /api/item
+      span crete or update item
+    li
+      h4 POST /api/delete-item

@@ -5,6 +5,8 @@ var twitter = new twitterAPI({
     callback: 'http://localhost:1235/callback'
 });
 
+var User = require('../data/user').User;
+
 exports.login = function(req, res) {
     twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results) {
         if (error) {
@@ -55,17 +57,55 @@ exports.callback = function(req, res, next) {
 };
 
 exports.loadUser = function(req, res) {
-    twitter.account('verify_credentials', {},
-        req.session.auth.accessToken,
-        req.session.auth.accessTokenSecret,
-        function(error, data, response) {
-            if (!error) {
-                req.session.user = {};
-                req.session.user.id = data.id;
-                req.session.user.name = data.screen_name;
+    var onGetAccount = function(error, account, response) {
+        if (error) {
+            console.log(error);
+            onLoadUser(null);
+            return;
+        }
+
+        User.find({ twitterId: account.id }).exec(function(error, docs) {
+            if (error) {
+                console.log(error);
+                onLoadUser(null);
+                return;
             }
 
-            res.redirect('/');
-        }
+            var onCreateOrUpdate = function(error, product) {
+                if (error) {
+                    console.log(error);
+                    onLoadUser(null);
+                    return;
+                }
+
+                onLoadUser(product);
+            };
+
+            if (docs.length === 0) {
+                new User({
+                    twitterId: account.id,
+                    name: account.screen_name,
+                    createdAt: new Date(),
+                    lastLoginedAt: new Date()
+                }).save(onCreateOrUpdate);
+            } else {
+                User.findByIdAndUpdate(docs[0].id, {
+                    lastLoginedAt: new Date()
+                }, onCreateOrUpdate);
+            }
+        });
+    };
+
+    var onLoadUser = function(user) {
+        req.session.user = user;
+        res.redirect('/');
+    };
+
+    twitter.account(
+        'verify_credentials',
+        {},
+        req.session.auth.accessToken,
+        req.session.auth.accessTokenSecret,
+        onGetAccount
     );
 };

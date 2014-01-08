@@ -6,6 +6,7 @@
 var express = require('express');
 var routes = require('./routes');
 var functionTest = require('./routes/functionTest');
+var admin = require('./routes/api/admin');
 var user = require('./routes/user');
 var auth = require('./routes/auth');
 
@@ -36,6 +37,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/function-test', functionTest.index);
+app.get('/api/admin/user', admin.user.list);
 app.get('/users', user.list);
 app.get('/login', auth.login);
 app.get('/callback', auth.callback, auth.loadUser);
