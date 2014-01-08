@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
     twitterId: { type: String, required: true, unique: true },
+    twitterScreenName: { type: String, requried: true, unique: true },
     name: { type: String, requried: true },
     createdAt: { type: Date },
     updatedAt: { type: Date },

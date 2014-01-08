@@ -8,6 +8,9 @@ var routes = require('./routes');
 var functionTest = require('./routes/functionTest');
 var admin = require('./routes/api/admin');
 var auth = require('./routes/auth');
+var user = require('./routes/user');
+
+var routerUtil = require('./routes/util');
 
 var http = require('http');
 var path = require('path');
@@ -36,10 +39,14 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/function-test', functionTest.index);
-app.get('/api/admin/user', admin.user.list);
+app.get('/api/admin/user', routerUtil.adminOnly('xhr'), admin.user.list);
 app.get('/login', auth.login);
 app.get('/callback', auth.callback, auth.loadUser);
 app.get('/logout', auth.logout);
+
+app.get('/mypage', routerUtil.mustLogin, user.itsme, user.detail);
+app.get('/user', routerUtil.adminOnly('page'), user.list);
+app.get('/user/detail/:twitterScreenName', user.detail);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

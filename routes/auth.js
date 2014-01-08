@@ -5,6 +5,9 @@ var twitter = new twitterAPI({
     callback: 'http://localhost:1235/callback'
 });
 
+// TODO
+var DEFAULT_ADMIN_USER = ['phi_jp', 'daishi_hmr'];
+
 var User = require('../data/user').User;
 
 exports.login = function(req, res) {
@@ -82,15 +85,20 @@ exports.loadUser = function(req, res) {
             };
 
             if (doc) {
+                console.log('welcome back user: ' + doc.twitterId);
                 User.findByIdAndUpdate(doc.id, {
                     lastLoginedAt: new Date()
                 }, onCreateOrUpdate);
             } else {
+                console.log('create new user: ' + account.id);
                 User.create({
                     twitterId: account.id,
+                    twitterScreenName: account.screen_name,
                     name: account.screen_name,
                     createdAt: new Date(),
-                    lastLoginedAt: new Date()
+                    updatedAt: new Date(),
+                    lastLoginedAt: new Date(),
+                    admin: (DEFAULT_ADMIN_USER.indexOf(account.screen_name) !== -1)
                 }, onCreateOrUpdate);
             }
         });
