@@ -64,7 +64,7 @@ exports.loadUser = function(req, res) {
             return;
         }
 
-        User.find({ twitterId: account.id }).exec(function(error, docs) {
+        User.findOne({ twitterId: account.id }).exec(function(error, doc) {
             if (error) {
                 console.log(error);
                 onLoadUser(null);
@@ -81,15 +81,15 @@ exports.loadUser = function(req, res) {
                 onLoadUser(product);
             };
 
-            if (docs.length === 0) {
-                new User({
+            if (doc) {
+                User.findByIdAndUpdate(doc.id, {
+                    lastLoginedAt: new Date()
+                }, onCreateOrUpdate);
+            } else {
+                User.create({
                     twitterId: account.id,
                     name: account.screen_name,
                     createdAt: new Date(),
-                    lastLoginedAt: new Date()
-                }).save(onCreateOrUpdate);
-            } else {
-                User.findByIdAndUpdate(docs[0].id, {
                     lastLoginedAt: new Date()
                 }, onCreateOrUpdate);
             }

@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-    twitterId: { type: String, required: true },
+    twitterId: { type: String, required: true, unique: true },
     name: { type: String, requried: true },
     createdAt: { type: Date },
     updatedAt: { type: Date },
