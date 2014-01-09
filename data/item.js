@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 var ItemSchema = new Schema({
     title: { type: String, requried: true },
+    kind: { type: Number },
     createdAt: { type: Date },
     updatedAt: { type: Date }
 });

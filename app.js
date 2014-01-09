@@ -9,9 +9,13 @@ var MongoStore = require('connect-mongo')(express);
 
 var routes = require('./routes');
 var functionTest = require('./routes/functionTest');
-var admin = require('./routes/api/admin');
+
+var adminApi = require('./routes/api/admin');
+var itemApi = require('./routes/api/item');
+
 var auth = require('./routes/auth');
 var user = require('./routes/user');
+var item = require('./routes/item');
 
 var routerUtil = require('./routes/util');
 
@@ -53,9 +57,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// page access
 app.get('/', routes.index);
 app.get('/function-test', functionTest.index);
-app.get('/api/admin/user', routerUtil.adminOnly('xhr'), admin.user.list);
 app.get('/login', auth.login);
 app.get('/callback', auth.callback, auth.loadUser);
 app.get('/logout', auth.logout);
@@ -63,6 +67,11 @@ app.get('/logout', auth.logout);
 app.get('/mypage', routerUtil.mustLogin, user.itsme, user.detail);
 app.get('/user', routerUtil.adminOnly('page'), user.list);
 app.get('/user/:twitterScreenName', user.detail);
+app.get('/item', item.index);
+
+// xhr access
+app.get('/api/admin/user', routerUtil.adminOnly('xhr'), adminApi.user.list);
+app.get('/api/item', itemApi.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

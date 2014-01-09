@@ -22,6 +22,7 @@ exports.user.list = function(req, res) {
     var flowSelectPage = new Flow(1, junction);
     var flowCountAll = new Flow(1, junction);
 
+    // select page
     User
         .find(where)
         .limit(10)
@@ -35,6 +36,8 @@ exports.user.list = function(req, res) {
                 flowSelectPage.pass(docs);
             }
         });
+
+    // count all data
     User
         .count(where)
         .exec(function(error, count) {

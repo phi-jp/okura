@@ -73,7 +73,7 @@ exports.loadUser = function(req, res) {
             req.session.auth.accessToken,
             req.session.auth.accessTokenSecret,
             function(error, account) {
-                if (error) flow.miss();
+                if (error) flow.miss(error);
                 else {
                     flow.pass();
                     loadUser(account);
@@ -85,7 +85,7 @@ exports.loadUser = function(req, res) {
     // 2. find user data by twitter id.
     var loadUser = function(account) {
         User.findByTwitterId(account.id, function(error, user) {
-            if (error) flow.miss();
+            if (error) flow.miss(error);
             else {
                 flow.pass();
                 if (!user) createUser(account);
@@ -106,7 +106,7 @@ exports.loadUser = function(req, res) {
             lastLoginedAt: new Date(),
             admin: (config.core.adminUsers.indexOf(account.screen_name) !== -1)
         }, function(error, saved) {
-            if (error) flow.miss();
+            if (error) flow.miss(error);
             else flow.pass(saved);
         });
     };
@@ -116,7 +116,7 @@ exports.loadUser = function(req, res) {
         console.log('welcome back user: ' + user.name);
         user.lastLoginedAt = new Date();
         User.update(user, function(error, saved) {
-            if (error) flow.miss();
+            if (error) flow.miss(error);
             else flow.pass(saved);
         });
     };
@@ -124,8 +124,10 @@ exports.loadUser = function(req, res) {
     // 4. finally, put user data into session, and redirect to top.
     var flow = new Flow(3, function(error, args) {
 
-        if (error) req.session.user = null;
-        else req.session.user = args[0].toSessionObject();
+        if (error) {
+            console.dir(error);
+            req.session.user = null;
+        } else req.session.user = args[0].toSessionObject();
 
         res.redirect('/');
     });
