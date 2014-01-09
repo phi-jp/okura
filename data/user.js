@@ -14,7 +14,39 @@ var UserSchema = new Schema({
 UserSchema.pre('save', function(next) {
     console.log("save User twitterId:" + this.twitterId);
     this.updatedAt = new Date();
+    this.increment();
     next();
 });
 
-var User = exports.User = mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema);
+
+User.prototype.toSessionObject = function() {
+    return {
+        id: this.id,
+        twitterScreenName: this.twitterScreenName,
+        name: this.name,
+        admin: this.admin
+    };
+};
+
+exports.create = function(data, callback) {
+    console.log("create User twitterId:" + data.twitterId);
+    User.create(data, callback);
+};
+
+exports.update = function(data, callback) {
+    console.log("update User twitterId:" + data.twitterId);
+    if (data.save) {
+        data.save(callback);
+    } else {
+        User.findByIdAndUpdate(data.id, data, {}, callback);
+    }
+};
+
+exports.findByTwitterId = function(twitterId, callback) {
+    User.findOne({ twitterId: twitterId }, callback);
+};
+
+exports.findByTwitterScreenName = function(twitterScreenName, callback) {
+    User.findOne({ twitterScreenName: twitterScreenName }, callback);
+};

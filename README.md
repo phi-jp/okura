@@ -12,6 +12,18 @@ $ cd okura
 $ npm install
 ```
 
+```sh
+$ mongod
+```
+
+```sh
+$ mongo
+> use okuradb
+> db.addUser('okura', 'okura')
+> use okurasession
+> db.addUser('okura', 'okura')
+```
+
 ## run
 
 ```sh

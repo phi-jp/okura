@@ -1,3 +1,4 @@
+var config = require('../util/config').config.database.main;
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -8,4 +9,4 @@ db.on('error', function() {
 db.once('open', function() {
     console.log('Connected okuradb');
 });
-mongoose.connect('mongodb://localhost/okuradb');
+mongoose.connect('mongodb://' + config.username + ':' + config.password + '@' + config.host + '/' + config.db);

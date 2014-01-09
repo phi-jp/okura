@@ -4,7 +4,22 @@
         "adminUsers": [
             "daishi_hmr",
             "phi_jp"
-        ]
+        ],
+        "sessionSecret": "okura-secret"
+    },
+    "database": {
+        "main": {
+            "host": "localhost",
+            "db": "okuradb",
+            "username": "okura",
+            "password": "okura"
+        },
+        "session": {
+            "host": "localhost",
+            "db": "okurasession",
+            "username": "okura",
+            "password": "okura"
+        }
     },
     "twitter": {
         "consumerKey": "X5O0LjAio4RteJnRoo287A",

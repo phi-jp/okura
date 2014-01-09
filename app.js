@@ -2,8 +2,11 @@
 /**
  * Module dependencies.
  */
+var config = require('./util/config').config;
 
 var express = require('express');
+var MongoStore = require('connect-mongo')(express);
+
 var routes = require('./routes');
 var functionTest = require('./routes/functionTest');
 var admin = require('./routes/api/admin');
@@ -26,8 +29,21 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.cookieParser('okura-cookie'));
-app.use(express.session());
+app.use(express.cookieParser());
+app.use(express.session({
+    secret: config.core.sessionSecret,
+    store: new MongoStore({
+        db: config.database.session.db,
+        host: config.database.session.host,
+        username: config.database.session.username,
+        password: config.database.session.password,
+        clear_interval: 60 * 60
+    }),
+    cookie: {
+        httpOnly: false,
+        maxAge: null
+    }
+}));
 app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));

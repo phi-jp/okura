@@ -1,16 +1,18 @@
 {
-  "name": "application-name",
+  "name": "okura",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
+  "repository": "https://github.com/phi-jp/okura.git",
   "dependencies": {
     "express": "3.4.7",
     "jade": "*",
     "stylus": "*",
     "mongoose": "~3.8.4",
     "node-twitter-api": "~1.1.1",
-    "flow_js": "~1.0.2"
+    "flow_js": "~1.0.2",
+    "connect-mongo": "~0.4.0"
   }
 }
