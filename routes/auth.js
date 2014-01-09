@@ -1,12 +1,10 @@
+var config = require('../util/config').config;
 var twitterAPI = require('node-twitter-api');
 var twitter = new twitterAPI({
-    consumerKey: 'X5O0LjAio4RteJnRoo287A',
-    consumerSecret: 'O1YalKylA39HYJzFUVKi0PQYtk0wDe1WGLEj1FYkY',
-    callback: 'http://localhost:1235/callback'
+    consumerKey: config.twitter.consumerKey,
+    consumerSecret: config.twitter.consumerSecret,
+    callback: 'http://' + config.core.domain + '/callback'
 });
-
-// TODO
-var DEFAULT_ADMIN_USER = ['phi_jp', 'daishi_hmr'];
 
 var User = require('../data/user').User;
 
@@ -98,7 +96,7 @@ exports.loadUser = function(req, res) {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     lastLoginedAt: new Date(),
-                    admin: (DEFAULT_ADMIN_USER.indexOf(account.screen_name) !== -1)
+                    admin: (config.core.adminUsers.indexOf(account.screen_name) !== -1)
                 }, onCreateOrUpdate);
             }
         });

@@ -1,0 +1,13 @@
+{
+    "core": {
+        "domain": "localhost:1235",
+        "adminUsers": [
+            "daishi_hmr",
+            "phi_jp"
+        ]
+    },
+    "twitter": {
+        "consumerKey": "X5O0LjAio4RteJnRoo287A",
+        "consumerSecret": "O1YalKylA39HYJzFUVKi0PQYtk0wDe1WGLEj1FYkY"
+    }
+}
