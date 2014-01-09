@@ -10,6 +10,7 @@
     "jade": "*",
     "stylus": "*",
     "mongoose": "~3.8.4",
-    "node-twitter-api": "~1.1.1"
+    "node-twitter-api": "~1.1.1",
+    "flow_js": "~1.0.2"
   }
 }

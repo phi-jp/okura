@@ -1,3 +1,4 @@
+var Flow = require('flow_js').Flow;
 var User = require('../../data/user').User;
 
 exports.user = {};
@@ -9,26 +10,43 @@ exports.user.list = function(req, res) {
         where.name = new RegExp('^' + req.param('name'));
     }
 
+    var junction = new Flow(2, function(error, results) {
+        if (error) return onError(res, error);
+
+        res.send(JSON.stringify({
+            success: true,
+            data: results[0][0],
+            count: results[1][0]
+        }));
+    });
+    var flowSelectPage = new Flow(1, junction);
+    var flowCountAll = new Flow(1, junction);
+
     User
         .find(where)
         .limit(10)
         .skip(10 * page)
-        .sort({name: 'asc'})
+        .sort({ id: 'asc' })
         .exec(function(error, docs) {
-            if (error) return onError(error);
-
-            User.count(where).exec(function(error, count) {
-                if (error) return onError(error);
-
-                res.send(JSON.stringify({
-                    success: true,
-                    data: docs,
-                    count: count
-                }));
-            });
+            if (error) {
+                console.log("Error: " + error);
+                flowSelectPage.miss();
+            } else {
+                flowSelectPage.pass(docs);
+            }
+        });
+    User
+        .count(where)
+        .exec(function(error, count) {
+            if (error) {
+                console.log("Error: " + error);
+                flowCountAll.miss();
+            } else {
+                flowCountAll.pass(count);
+            }
         });
 };
 
 var onError = function(res) {
-    res.send(JSON.stringify({ success: false}));
+    res.send(JSON.stringify({ success: false }));
 };
