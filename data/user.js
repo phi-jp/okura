@@ -12,6 +12,7 @@ var UserSchema = new Schema({
     admin: { type: Boolean, default: false }
 });
 UserSchema.pre('save', function(next) {
+    console.log("save User twitterId:" + this.twitterId);
     this.updatedAt = new Date();
     next();
 });
