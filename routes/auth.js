@@ -15,7 +15,8 @@ exports.login = function(req, res) {
     twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results) {
         if (error) {
             // TODO
-            console.log('getting OAuth request token: ' + error);
+            console.log('getting OAuth request token');
+            console.dir(error);
             res.send(500);
             return;
         }
@@ -42,12 +43,14 @@ exports.callback = function(req, res, next) {
     }
 
     var auth = req.session.auth;
+    console.dir(auth);
 
     twitter.getAccessToken(auth.requestToken, auth.requestTokenSecret, oauthVerifier,
         function(error, accessToken, accessTokenSecret, results) {
             if (error) {
                 // TODO
-                console.log('getting OAuth access token: ' + error);
+                console.log('getting OAuth access token');
+                console.dir(error);
                 next(new Error());
                 return;
             }
