@@ -62,7 +62,7 @@ app.get('/logout', auth.logout);
 
 app.get('/mypage', routerUtil.mustLogin, user.itsme, user.detail);
 app.get('/user', routerUtil.adminOnly('page'), user.list);
-app.get('/user/detail/:twitterScreenName', user.detail);
+app.get('/user/:twitterScreenName', user.detail);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

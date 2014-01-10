@@ -16,7 +16,10 @@ exports.list = function(req, res) {
 exports.detail = function(req, res) {
     User.findByTwitterScreenName(req.params.twitterScreenName, function(error, user) {
         if (user) {
-            res.render('index', { title: 'user ' + user.name + ' \'s page' });
+            res.render('user', {
+                title: 'user ' + user.name + ' \'s page',
+                user: user,
+            });
         } else {
             res.send(404);
         }
