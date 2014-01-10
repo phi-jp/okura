@@ -1,5 +1,6 @@
 var Flow = require('flow_js').Flow;
 var User = require('../../data/user').User;
+var util = require('../util');
 
 exports.user = {};
 
@@ -11,7 +12,7 @@ exports.user.list = function(req, res) {
     }
 
     var junction = new Flow(2, function(error, results) {
-        if (error) return onError(res, error);
+        if (error) return util.failXhr(res, error);
 
         res.send(JSON.stringify({
             success: true,
@@ -48,8 +49,4 @@ exports.user.list = function(req, res) {
                 flowCountAll.pass(count);
             }
         });
-};
-
-var onError = function(res) {
-    res.send(JSON.stringify({ success: false }));
 };

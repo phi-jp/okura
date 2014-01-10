@@ -54,8 +54,13 @@ block content
       span show item detail
     li
       h4
-        a(href='/item/upload') /item/upload
+        a(href='/upload') /upload
       span show item upload page
+    li
+      h4
+        form(action='/upload/submit', method='post', enctype='multipart/form-data')
+          input(type='file', name='items')
+          input(type='submit')
 
   h2 xhr access
 

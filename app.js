@@ -10,12 +10,13 @@ var MongoStore = require('connect-mongo')(express);
 var routes = require('./routes');
 var functionTest = require('./routes/functionTest');
 
-var adminApi = require('./routes/api/admin');
-var itemApi = require('./routes/api/item');
-
 var auth = require('./routes/auth');
 var user = require('./routes/user');
 var item = require('./routes/item');
+var upload = require('./routes/upload');
+
+var adminApi = require('./routes/api/admin');
+var itemApi = require('./routes/api/item');
 
 var routerUtil = require('./routes/util');
 
@@ -33,6 +34,7 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({
     secret: config.core.sessionSecret,
@@ -65,13 +67,16 @@ app.get('/callback', auth.callback, auth.loadUser);
 app.get('/logout', auth.logout);
 
 app.get('/mypage', routerUtil.mustLogin, user.itsme, user.detail);
-app.get('/user', routerUtil.adminOnly('page'), user.list);
+app.get('/user', routerUtil.adminOnly, user.list);
 app.get('/user/:twitterScreenName', user.detail);
-app.get('/item', item.index);
+app.get('/item/detail/:id', item.detail);
+app.get('/upload', routerUtil.mustLogin, upload.index);
+app.post('/upload/submit', routerUtil.mustLogin, upload.submit);
+app.get('/raw/:id', item.raw);
 
 // xhr access
-app.get('/api/admin/user', routerUtil.adminOnly('xhr'), adminApi.user.list);
-app.get('/api/item', itemApi.list);
+app.get('/api/admin/user', routerUtil.adminOnly, adminApi.user.list);
+app.get('/api/item/list', itemApi.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

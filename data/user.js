@@ -11,13 +11,6 @@ var UserSchema = new Schema({
     lastLoginedAt: { type: Date },
     admin: { type: Boolean, default: false }
 });
-UserSchema.pre('save', function(next) {
-    console.log("save User twitterId:" + this.twitterId);
-    this.updatedAt = new Date();
-    this.increment();
-    next();
-});
-
 var User = mongoose.model('User', UserSchema);
 
 User.prototype.toSessionObject = function() {
@@ -29,13 +22,18 @@ User.prototype.toSessionObject = function() {
     };
 };
 
+exports.User = User;
+
 exports.create = function(data, callback) {
     console.log("create User twitterId:" + data.twitterId);
+    data.createdAt = new Date();
+    data.updatedAt = new Date();
     User.create(data, callback);
 };
 
 exports.update = function(data, callback) {
     console.log("update User twitterId:" + data.twitterId);
+    data.updatedAt = new Date();
     if (data.save) {
         data.save(callback);
     } else {
