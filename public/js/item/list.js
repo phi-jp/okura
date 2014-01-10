@@ -18,7 +18,7 @@ var onGetItemList = function(res) {
 
         var li = ul.create('li');
         var a = li.create('a');
-        a.attr.set('href', '/item/detail/' + item._id);
+        a.attr.set('href', '/item/' + item._id);
         a.text = item.title;
 
         if (item.kind === 0) {

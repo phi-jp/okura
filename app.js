@@ -69,7 +69,9 @@ app.get('/logout', auth.logout);
 app.get('/mypage', routerUtil.mustLogin, user.itsme, user.detail);
 app.get('/user', routerUtil.adminOnly, user.list);
 app.get('/user/:twitterScreenName', user.detail);
-app.get('/item/detail/:id', item.detail);
+
+app.get('/item', item.list);
+app.get('/item/:id', item.detail);
 app.get('/upload', routerUtil.mustLogin, upload.index);
 app.post('/upload/submit', routerUtil.mustLogin, upload.submit);
 app.get('/raw/:id', item.raw);
