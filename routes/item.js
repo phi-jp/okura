@@ -8,7 +8,7 @@ exports.list = function(req, res) {
 exports.detail = function(req, res) {
     Item.findById(req.params.id, function(error, item) {
         if (error) {
-            req.send(404);
+            res.send(404);
             return;
         }
         res.render('item/detail', { item: item });
@@ -18,7 +18,7 @@ exports.detail = function(req, res) {
 exports.raw = function(req, res) {
     Item.findById(req.params.id, function(error, item) {
         if (error) {
-            req.send(404);
+            res.send(404);
             return;
         }
         res.set('Content-Type', item.type);
