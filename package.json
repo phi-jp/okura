@@ -13,6 +13,7 @@
     "mongoose": "~3.8.4",
     "node-twitter-api": "~1.1.1",
     "flow_js": "~1.0.2",
-    "connect-mongo": "~0.4.0"
+    "connect-mongo": "~0.4.0",
+    "mime": "~1.2.11"
   }
 }

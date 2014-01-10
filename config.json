@@ -5,7 +5,8 @@
             "daishi_hmr",
             "phi_jp"
         ],
-        "sessionSecret": "okura-secret"
+        "sessionSecret": "okura-secret",
+        "uploadItemsPath": "./uploads"
     },
     "database": {
         "main": {

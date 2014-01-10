@@ -1,0 +1,6 @@
+extends ../layout
+
+block content
+  h1 item page #{item.id} - #{item.fileName}
+  img(src='/raw/#{item.id}')
+  a(href='/item') back
